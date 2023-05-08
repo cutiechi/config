@@ -1,0 +1,314 @@
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+allow-lan: false
+mode: Rule
+log-level: info
+ipv6: false
+
+
+hosts:
+  services.googleapis.cn: 216.58.200.67
+  www.google.cn: 216.58.200.67
+
+
+external-controller: 0.0.0.0:9090
+
+
+clash-for-android:
+  append-system-dns: false
+
+
+profile:
+  tracing: true
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  default-nameserver:
+    - 223.5.5.5
+    - 1.0.0.1
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-filter:
+    - "*.lan"
+    - stun.*.*.*
+    - stun.*.*
+    - time.windows.com
+    - time.nist.gov
+    - time.apple.com
+    - time.asia.apple.com
+    - "*.ntp.org.cn"
+    - "*.openwrt.pool.ntp.org"
+    - time1.cloud.tencent.com
+    - time.ustc.edu.cn
+    - pool.ntp.org
+    - ntp.ubuntu.com
+    - ntp.aliyun.com
+    - ntp1.aliyun.com
+    - ntp2.aliyun.com
+    - ntp3.aliyun.com
+    - ntp4.aliyun.com
+    - ntp5.aliyun.com
+    - ntp6.aliyun.com
+    - ntp7.aliyun.com
+    - time1.aliyun.com
+    - time2.aliyun.com
+    - time3.aliyun.com
+    - time4.aliyun.com
+    - time5.aliyun.com
+    - time6.aliyun.com
+    - time7.aliyun.com
+    - "*.time.edu.cn"
+    - time1.apple.com
+    - time2.apple.com
+    - time3.apple.com
+    - time4.apple.com
+    - time5.apple.com
+    - time6.apple.com
+    - time7.apple.com
+    - time1.google.com
+    - time2.google.com
+    - time3.google.com
+    - time4.google.com
+    - music.163.com
+    - "*.music.163.com"
+    - "*.126.net"
+    - musicapi.taihe.com
+    - music.taihe.com
+    - songsearch.kugou.com
+    - trackercdn.kugou.com
+    - "*.kuwo.cn"
+    - api-jooxtt.sanook.com
+    - api.joox.com
+    - joox.com
+    - y.qq.com
+    - "*.y.qq.com"
+    - streamoc.music.tc.qq.com
+    - mobileoc.music.tc.qq.com
+    - isure.stream.qqmusic.qq.com
+    - dl.stream.qqmusic.qq.com
+    - aqqmusic.tc.qq.com
+    - amobile.music.tc.qq.com
+    - "*.xiami.com"
+    - "*.music.migu.cn"
+    - music.migu.cn
+    - "*.msftconnecttest.com"
+    - "*.msftncsi.com"
+    - localhost.ptlogin2.qq.com
+    - "*.*.*.srv.nintendo.net"
+    - "*.*.stun.playstation.net"
+    - xbox.*.*.microsoft.com
+    - "*.ipv6.microsoft.com"
+    - "*.*.xboxlive.com"
+    - speedtest.cros.wr.pvp.net
+  nameserver:
+    - https://223.6.6.6/dns-query
+    - https://rubyfish.cn/dns-query
+    - https://dns.pub/dns-query
+  fallback:
+    - https://dns.rubyfish.cn/dns-query
+    - https://public.dns.iij.jp/dns-query
+    - tls://8.8.4.4
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
+      - 127.0.0.1/32
+    domain:
+      - +.google.com
+      - +.facebook.com
+      - +.twitter.com
+      - +.youtube.com
+      - +.xn--ngstr-lra8j.com
+      - +.google.cn
+      - +.googleapis.cn
+      - +.googleapis.com
+      - +.gvt1.com
+
+
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+    - any:53
+  auto-route: true
+  auto-detect-interface: true
+
+
+proxy-groups:
+  - name: 手动选择
+    type: select
+    proxies: &proxies
+      - DIRECT
+  - name: 默认
+    type: select
+    proxies:
+      - 手动选择
+      - DIRECT
+  - name: Netflix
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/mini/Netflix.png
+    type: select
+    proxies: *proxies
+  - name: Disney+
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/mini/Disney%2B.png
+    type: select
+    proxies: *proxies
+  - name: Spotify
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/mini/Spotify.png
+    type: select
+    proxies: *proxies
+  - name: YouTube
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/mini/YouTube.png
+    type: select
+    proxies: *proxies
+  - name: Prime Video
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/mini/Prime_Video.png
+    type: select
+    proxies: *proxies
+  - name: HBO Max
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/mini/HBO_Max.png
+    type: select
+    proxies: *proxies
+
+
+rule-providers:
+  netflix:
+    behavior: domain
+    url: https://rules.kr328.app/netflix.yaml
+    interval: 86400
+    type: http
+    path: ./rule-providers/netflix.yaml
+  disney:
+    behavior: domain
+    url: https://rules.kr328.app/disney.yaml
+    interval: 86400
+    type: http
+    path: ./rule-providers/disney.yaml
+  spotify:
+    behavior: domain
+    url: https://rules.kr328.app/spotify.yaml
+    interval: 86400
+    type: http
+    path: ./rule-providers/spotify.yaml
+  github:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/github.yaml
+    type: http
+    path: ./rule-providers/github.yaml
+  telegram:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/telegram.yaml
+    type: http
+    path: ./rule-providers/telegram.yaml
+  telegram-ip-cidr:
+    behavior: ipcidr
+    interval: 86400
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+    type: http
+    path: ./rule-providers/telegram-ip-cidr.yaml
+  youtube:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/youtube.yaml
+    type: http
+    path: ./rule-providers/youtube.yaml
+  google:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/google.yaml
+    type: http
+    path: ./rule-providers/google.yaml
+  twitter:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/twitter.yaml
+    type: http
+    path: ./rule-providers/twitter.yaml
+  instagram:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/instagram.yaml
+    type: http
+    path: ./rule-providers/instagram.yaml
+  facebook:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/facebook.yaml
+    type: http
+    path: ./rule-providers/facebook.yaml
+  steam:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/steam.yaml
+    type: http
+    path: ./rule-providers/steam.yaml
+  steam-cn:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/steam@cn.yaml
+    type: http
+    path: ./rule-providers/steam-cn.yaml
+  microsoft:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/microsoft.yaml
+    type: http
+    path: ./rule-providers/microsoft.yaml
+  microsoft-cn:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/microsoft@cn.yaml
+    type: http
+    path: ./rule-providers/microsoft-cn.yaml
+  xbox:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/xbox.yaml
+    type: http
+    path: ./rule-providers/xbox.yaml
+  prime-video:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/primevideo.yaml
+    type: http
+    path: ./rule-providers/prime-video.yaml
+  hbo-max:
+    behavior: domain
+    interval: 86400
+    url: https://rules.kr328.app/hbo.yaml
+    type: http
+    path: ./rule-providers/hbo-max.yaml
+
+
+rules:
+  - RULE-SET,netflix,Netflix
+  - RULE-SET,disney,Disney+
+  - RULE-SET,spotify,Spotify
+  - RULE-SET,youtube,YouTube
+  - RULE-SET,prime-video,Prime Video
+  - RULE-SET,hbo-max,HBO Max
+  - RULE-SET,github,手动选择
+  - RULE-SET,telegram,手动选择
+  - RULE-SET,telegram-ip-cidr,手动选择
+  - RULE-SET,google,手动选择
+  - RULE-SET,twitter,手动选择
+  - RULE-SET,instagram,手动选择
+  - RULE-SET,facebook,手动选择
+  - RULE-SET,steam,手动选择
+  - RULE-SET,microsoft,手动选择
+  - RULE-SET,xbox,手动选择
+  - RULE-SET,microsoft-cn,DIRECT
+  - RULE-SET,steam-cn,DIRECT
+  - DOMAIN-SUFFIX,tapbots.com,手动选择
+  - DOMAIN-SUFFIX,iphone-ld.apple.com,DIRECT
+  - DOMAIN-SUFFIX,lcdn-locator.apple.com,DIRECT
+  - DOMAIN-SUFFIX,lcdn-registration.apple.com,DIRECT
+  - DOMAIN-SUFFIX,push.apple.com,DIRECT
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,默认
